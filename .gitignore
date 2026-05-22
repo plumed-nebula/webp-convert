@@ -1,0 +1,33 @@
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+
+# Misc
+.DS_Store
+.fleet
+.idea
+.claude
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# User config (copy example-config.ts to config.ts to get started)
+config.ts
+
+# Test artifacts
+public/test-input.gif
+.playwright-mcp/
+*.png
