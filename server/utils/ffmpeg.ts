@@ -35,15 +35,18 @@ export async function runConvert(
     await writeFile(inputPath, inputBuffer)
 
     const command = ffmpeg(inputPath)
-    command.videoCodec('libwebp_anim')
-    command.addOutputOptions([
+    console.log('[ffmpeg] lossless:', params.lossless, 'fps:', params.fps, 'quality:', params.quality)
+    const outputOpts: string[] = [
       `-lossless ${params.lossless ? 1 : 0}`,
-      `-q:v ${params.quality}`,
       `-compression_level ${params.compressionLevel}`,
       `-loop ${params.loop}`,
-      `-preset ${params.preset}`,
       '-an',
-    ])
+    ]
+    if (!params.lossless) {
+      outputOpts.push(`-q:v ${params.quality}`, `-preset ${params.preset}`)
+    }
+    command.videoCodec('libwebp_anim')
+    command.addOutputOptions(outputOpts)
 
     const vfParts: string[] = []
     if (params.fps > 0) {

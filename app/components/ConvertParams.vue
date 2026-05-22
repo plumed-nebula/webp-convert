@@ -3,6 +3,14 @@
     <h3 class="panel-title">转换参数</h3>
 
     <div class="param-row">
+      <label class="toggle-label">
+        <input type="checkbox" :checked="params.lossless"
+          @change="update('lossless', ($event.target as HTMLInputElement).checked)" />
+        无损模式
+      </label>
+    </div>
+
+    <div class="param-row" v-if="!params.lossless">
       <label>质量: {{ params.quality }}</label>
       <input type="range" min="1" max="100" :value="params.quality"
         @input="update('quality', ($event.target as HTMLInputElement).valueAsNumber)" />
@@ -36,7 +44,7 @@
       </select>
     </div>
 
-    <div class="param-row">
+    <div class="param-row" v-if="!params.lossless">
       <label>预设</label>
       <select :value="params.preset" @change="update('preset', ($event.target as HTMLSelectElement).value)">
         <option value="default">默认</option>
@@ -59,14 +67,6 @@
           placeholder="高度 (auto)" min="1" max="4096"
           @input="update('height', toNum(($event.target as HTMLInputElement).value))" />
       </div>
-    </div>
-
-    <div class="param-row">
-      <label class="toggle-label">
-        <input type="checkbox" :checked="params.lossless"
-          @change="update('lossless', ($event.target as HTMLInputElement).checked)" />
-        无损模式
-      </label>
     </div>
 
     <div class="param-actions">

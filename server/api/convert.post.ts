@@ -63,7 +63,7 @@ export default defineEventHandler(async (event) => {
   const params = {
     quality: isNaN(rawQuality) ? 80 : Math.min(100, Math.max(0, rawQuality)),
     fps: isNaN(rawFps) ? 15 : Math.min(60, Math.max(0, rawFps)),
-    lossless: rawParams.lossless === 'true',
+    lossless: String(rawParams.lossless) === 'true',
     width: isNaN(rawWidth) ? -1 : Math.min(4096, Math.max(-1, rawWidth)),
     height: isNaN(rawHeight) ? -1 : Math.min(4096, Math.max(-1, rawHeight)),
     loop: isNaN(rawLoop) ? 0 : Math.min(65535, Math.max(0, rawLoop)),
