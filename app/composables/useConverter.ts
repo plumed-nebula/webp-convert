@@ -109,6 +109,7 @@ export function useConverter() {
   }
 
   const inputSize = computed(() => file.value?.size ?? 0)
+  const inputIsVideo = computed(() => file.value?.type.startsWith('video/') ?? false)
 
   return {
     file,
@@ -119,6 +120,7 @@ export function useConverter() {
     error,
     inputPreviewUrl,
     inputSize,
+    inputIsVideo,
     authKey,
     defaults,
     setAuthKey,

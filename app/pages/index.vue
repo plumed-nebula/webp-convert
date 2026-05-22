@@ -41,6 +41,7 @@
           :inputSize="inputSize"
           :error="error"
           :format="params.format"
+          :inputIsVideo="inputIsVideo"
           @download="download"
         />
       </section>
@@ -58,6 +59,7 @@ const {
   error,
   inputPreviewUrl,
   inputSize,
+  inputIsVideo,
   setFile,
   clearFile,
   resetParams,

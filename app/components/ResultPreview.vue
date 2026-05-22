@@ -16,7 +16,8 @@
     <div class="compare">
       <div class="compare-item">
         <h4>原文件</h4>
-        <img v-if="inputPreviewUrl" :src="inputPreviewUrl" class="preview-img" />
+        <video v-if="inputIsVideo && inputPreviewUrl" :src="inputPreviewUrl" class="preview-img" muted autoplay loop playsinline />
+        <img v-else-if="inputPreviewUrl" :src="inputPreviewUrl" class="preview-img" />
         <p class="size-label">{{ formatSize(inputSize) }}</p>
       </div>
       <div class="compare-arrow">→</div>
@@ -42,6 +43,7 @@ const props = defineProps<{
   inputSize: number
   error: string | null
   format: 'webp' | 'avif'
+  inputIsVideo: boolean
 }>()
 defineEmits<{ download: [] }>()
 
