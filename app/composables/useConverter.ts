@@ -7,6 +7,7 @@ export interface ConvertParams {
   loop: number
   compressionLevel: number
   preset: 'default' | 'picture' | 'photo' | 'drawing' | 'icon' | 'text'
+  format: 'webp' | 'avif'
 }
 
 const defaults: ConvertParams = {
@@ -18,6 +19,7 @@ const defaults: ConvertParams = {
   loop: 0,
   compressionLevel: 4,
   preset: 'picture',
+  format: 'webp',
 }
 
 const file = ref<File | null>(null)
@@ -100,7 +102,7 @@ export function useConverter() {
     if (!resultUrl.value) return
     const a = document.createElement('a')
     a.href = resultUrl.value
-    a.download = 'converted.webp'
+    a.download = params.value.format === 'avif' ? 'converted.avif' : 'converted.webp'
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)

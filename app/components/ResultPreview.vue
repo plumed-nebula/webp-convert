@@ -21,7 +21,7 @@
       </div>
       <div class="compare-arrow">→</div>
       <div class="compare-item">
-        <h4>WebP 输出</h4>
+        <h4>{{ formatLabel }} 输出</h4>
         <img :src="resultUrl" class="preview-img" />
         <p class="size-label">{{ formatSize(resultSize) }}</p>
       </div>
@@ -29,20 +29,23 @@
     <div class="size-ratio" v-if="inputSize > 0">
       压缩率: {{ ((1 - resultSize / inputSize) * 100).toFixed(1) }}%
     </div>
-    <button class="btn-download" @click="$emit('download')">下载 WebP</button>
+    <button class="btn-download" @click="$emit('download')">下载 {{ formatLabel }}</button>
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   status: 'idle' | 'converting' | 'done' | 'error'
   resultUrl: string | null
   inputPreviewUrl: string | null
   resultSize: number
   inputSize: number
   error: string | null
+  format: 'webp' | 'avif'
 }>()
 defineEmits<{ download: [] }>()
+
+const formatLabel = computed(() => props.format === 'avif' ? 'AVIF' : 'WebP')
 
 function formatSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`

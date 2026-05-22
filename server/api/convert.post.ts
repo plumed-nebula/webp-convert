@@ -60,6 +60,8 @@ export default defineEventHandler(async (event) => {
   const rawLoop = Number(rawParams.loop)
   const rawCompression = Number(rawParams.compressionLevel)
 
+  const format = rawParams.format === 'avif' ? 'avif' : 'webp'
+
   const params = {
     quality: isNaN(rawQuality) ? 80 : Math.min(100, Math.max(0, rawQuality)),
     fps: isNaN(rawFps) ? 15 : Math.min(60, Math.max(0, rawFps)),
@@ -69,15 +71,16 @@ export default defineEventHandler(async (event) => {
     loop: isNaN(rawLoop) ? 0 : Math.min(65535, Math.max(0, rawLoop)),
     compressionLevel: isNaN(rawCompression) ? 4 : Math.min(6, Math.max(0, rawCompression)),
     preset: isPreset(rawParams.preset) ? rawParams.preset : 'picture',
-  }
+    format,
+  } satisfies import('../utils/ffmpeg').ConvertParams
 
   const { runConvert } = await import('../utils/ffmpeg')
 
   try {
-    const outputBuffer = await runConvert(fileBuffer, ext, params, config.ffmpegTimeout)
-    setResponseHeader(event, 'Content-Type', 'image/webp')
-    setResponseHeader(event, 'Content-Disposition', 'attachment; filename="converted.webp"')
-    return new Uint8Array(outputBuffer)
+    const { buffer, contentType, ext: outExt } = await runConvert(fileBuffer, ext, params, config.ffmpegTimeout)
+    setResponseHeader(event, 'Content-Type', contentType)
+    setResponseHeader(event, 'Content-Disposition', `attachment; filename="converted.${outExt}"`)
+    return new Uint8Array(buffer)
   } catch (err: any) {
     console.error('Conversion error:', err)
     throw createError({

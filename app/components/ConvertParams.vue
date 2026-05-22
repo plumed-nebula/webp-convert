@@ -3,6 +3,16 @@
     <h3 class="panel-title">转换参数</h3>
 
     <div class="param-row">
+      <label>输出格式
+        <span class="test-badge">仅供测试</span>
+      </label>
+      <select :value="params.format" @change="update('format', ($event.target as HTMLSelectElement).value)">
+        <option value="webp">Animated WebP</option>
+        <option value="avif">Animated AVIF</option>
+      </select>
+    </div>
+
+    <div class="param-row">
       <label class="toggle-label">
         <input type="checkbox" :checked="params.lossless"
           @change="update('lossless', ($event.target as HTMLInputElement).checked)" />
@@ -44,7 +54,7 @@
       </select>
     </div>
 
-    <div class="param-row" v-if="!params.lossless">
+    <div class="param-row" v-if="!params.lossless && params.format !== 'avif'">
       <label>预设</label>
       <select :value="params.preset" @change="update('preset', ($event.target as HTMLSelectElement).value)">
         <option value="default">默认</option>
@@ -166,6 +176,17 @@ function toNum(v: string): number {
   accent-color: #6366f1;
   width: 16px;
   height: 16px;
+}
+.test-badge {
+  display: inline-block;
+  background: #fef3c7;
+  color: #d97706;
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+  font-weight: 500;
+  vertical-align: middle;
 }
 .btn-reset {
   background: none;

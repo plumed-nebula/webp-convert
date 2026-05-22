@@ -40,6 +40,7 @@
           :resultSize="resultSize"
           :inputSize="inputSize"
           :error="error"
+          :format="params.format"
           @download="download"
         />
       </section>
