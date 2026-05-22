@@ -43,7 +43,6 @@ export async function runConvert(
       `-loop ${params.loop}`,
       `-preset ${params.preset}`,
       '-an',
-      '-vsync 0',
     ])
 
     const vfParts: string[] = []
@@ -57,6 +56,10 @@ export async function runConvert(
     }
     if (vfParts.length > 0) {
       command.videoFilters(vfParts.join(','))
+    }
+    // Prevent ffmpeg from re-timing frames already processed by fps filter
+    if (params.fps > 0) {
+      command.addOutputOption('-vsync', '0')
     }
 
     command.save(outputPath)

@@ -53,14 +53,21 @@ export default defineEventHandler(async (event) => {
     return v != null && (PRESETS as readonly string[]).includes(v)
   }
 
+  const rawFps = Number(rawParams.fps)
+  const rawQuality = Number(rawParams.quality)
+  const rawWidth = Number(rawParams.width)
+  const rawHeight = Number(rawParams.height)
+  const rawLoop = Number(rawParams.loop)
+  const rawCompression = Number(rawParams.compressionLevel)
+
   const params = {
-    quality: Math.min(100, Math.max(0, Number(rawParams.quality) || 80)),
-    fps: Math.min(60, Math.max(1, Number(rawParams.fps) || 15)),
+    quality: isNaN(rawQuality) ? 80 : Math.min(100, Math.max(0, rawQuality)),
+    fps: isNaN(rawFps) ? 15 : Math.min(60, Math.max(0, rawFps)),
     lossless: rawParams.lossless === 'true',
-    width: Math.min(4096, Math.max(-1, Number(rawParams.width) || -1)),
-    height: Math.min(4096, Math.max(-1, Number(rawParams.height) || -1)),
-    loop: Math.min(65535, Math.max(0, Number(rawParams.loop) || 0)),
-    compressionLevel: Math.min(6, Math.max(0, Number(rawParams.compressionLevel) || 4)),
+    width: isNaN(rawWidth) ? -1 : Math.min(4096, Math.max(-1, rawWidth)),
+    height: isNaN(rawHeight) ? -1 : Math.min(4096, Math.max(-1, rawHeight)),
+    loop: isNaN(rawLoop) ? 0 : Math.min(65535, Math.max(0, rawLoop)),
+    compressionLevel: isNaN(rawCompression) ? 4 : Math.min(6, Math.max(0, rawCompression)),
     preset: isPreset(rawParams.preset) ? rawParams.preset : 'picture',
   }
 

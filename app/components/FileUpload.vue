@@ -5,6 +5,7 @@
     @dragover.prevent="dragging = true"
     @dragleave.prevent="dragging = false"
     @drop.prevent="onDrop"
+    @click="inputRef?.click()"
   >
     <input
       ref="inputRef"
@@ -21,7 +22,7 @@
         </svg>
       </div>
       <p class="drop-text">拖拽文件到此处，或点击选择</p>
-      <p class="drop-hint">支持 GIF / APNG / WebP / MP4 / WebM / MOV / AVI / MKV，最大 50MB</p>
+      <p class="drop-hint">支持 GIF / APNG / WebP / MP4 / WebM / MOV / AVI / MKV，最大 {{ maxSizeStr }}</p>
     </template>
 
     <template v-else>
@@ -38,6 +39,9 @@
 <script setup lang="ts">
 const props = defineProps<{ file: File | null }>()
 const emit = defineEmits<{ select: [file: File]; clear: [] }>()
+
+const config = useRuntimeConfig()
+const maxSizeStr = computed(() => formatSize(config.public.maxFileSize as number))
 
 const inputRef = ref<HTMLInputElement>()
 const dragging = ref(false)

@@ -18,5 +18,10 @@ export default defineNuxtConfig({
   runtimeConfig: {
     maxFileSize: appConfig.maxFileSize,
     ffmpegTimeout: appConfig.ffmpegTimeout,
+
+    public: {
+      maxFileSize: appConfig.maxFileSize,
+      enableAuth: appConfig.enableAuth,
+    },
   },
 })
